@@ -47,10 +47,11 @@ public class Driver
             try {
 
                 AgentMain.evel_initialize(event_api_url, port,
-                        path, topic,
+                        null, topic,
                         username,
                         password,
                         Level.DEBUG);
+                System.out.println("topic: " + topic);
             } catch (Exception e) {
                 e.printStackTrace();
             }
