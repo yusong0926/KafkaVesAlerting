@@ -117,7 +117,11 @@ public class Driver
         logger.debug("alerting events: " + map.toString());
         Date dNow = new Date( );
         SimpleDateFormat ft = new SimpleDateFormat ("E, MM dd yyyy hh:mm:ss zzz");
-        String internalHeader = ft.format(dNow);
+        Map<String, String> map_header = new HashMap<>();
+        map_header.put("collectorTimeStamp", ft.format(dNow));
+        Gson gson = new Gson();
+        String internalHeader = gson.toJson(map_header);
+        
         String eid = "Progran-20";
 
         EvelProgranProfile flt  = new EvelProgranProfile("enodbMeasurement", eid,"Resource Management", "MEASUREMENT",
@@ -126,19 +130,19 @@ public class Driver
                 EvelProgranProfile.EVEL_SOURCE_TYPES.EVEL_SOURCE_VPROGRAN,
                 EvelProgranProfile.EVEL_VF_STATUSES.EVEL_VF_STATUS_ACTIVE,
                 internalHeader);
-        flt.evel_header_set_source_name(map.get("profile"));
+        flt.evel_header_set_source_name("PROGRAN");
         flt.evel_header_set_sourceid(true,"Progran");
         flt.evel_nfcnamingcode_set("progran");
+        flt.evel_nfnamingcode_set("vPROGRAN");
         flt.evel_reporting_entity_id_set("No UUID available");
+        flt.evel_reporting_entity_name_set(map.get("profile"));
         flt.evel_fault_interface_set("ProgranInt");
-        flt.evel_header_type_set("Progran profile rate");
-        flt.evel_reporting_entity_name_set("prgrn");
 
         flt.evel_start_epoch_set((long)(Double.parseDouble(map.get("time"))*1000));
         flt.evel_last_epoch_set((long)(Double.parseDouble(map.get("time"))*1000));
         flt.evel_fault_addl_info_add("time", "time-"+(long)(Double.parseDouble(map.get("time"))*1000));
-        flt.evel_fault_addl_info_add("dlbitrate", "dlbitrate-"+map.get("dlbitrate"));
-        flt.evel_fault_addl_info_add("ulbitrate", "ulbitrate-"+map.get("ulbitrate"));
+        flt.evel_fault_addl_info_add("dlBitrate", "dlBitrate-"+map.get("dlbitrate"));
+        flt.evel_fault_addl_info_add("ulBitrate", "ulBitrate-"+map.get("ulbitrate"));
         flt.evel_fault_addl_info_add("dlAllocRBRate", "dlAllocRBRate-"+map.get("dlallocrbrate"));
         flt.evel_fault_addl_info_add("ulAllocRBRate", "ulAllocRBRate-"+map.get("ulallocrbrate"));
 
