@@ -61,6 +61,7 @@ public class Driver
             props.put("group.id", "alert");
             props.put("enable.auto.commit", "true");
             props.put("auto.commit.interval.ms", "1000");
+            //props.put("auto.offset.set", "latest");
             props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
             props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
             KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
@@ -107,8 +108,10 @@ public class Driver
     }
 
     public static boolean alert(Map<String, String> map, int totalCapacity) {
-        if (Integer.valueOf(map.get("dlbitrate"))/1000 > totalCapacity * 0.8 * Integer.valueOf(map.get("dlallocrbrate"))/100.0) return true;
-        if (Integer.valueOf(map.get("ulbitrate"))/1000 > totalCapacity * 0.8 * Integer.valueOf(map.get("ulallocrbrate"))/100.0) return true;
+        //if (Integer.valueOf(map.get("dlbitrate"))/1000 > totalCapacity * 0.8 * Integer.valueOf(map.get("dlallocrbrate"))/100.0) return true;
+        //if (Integer.valueOf(map.get("ulbitrate"))/1000 > totalCapacity * 0.8 * Integer.valueOf(map.get("ulallocrbrate"))/100.0) return true;
+        if (Integer.valueOf(map.get("dlbitrate"))  > totalCapacity * 8 * Integer.valueOf(map.get("dlallocrbrate"))) return true;
+        if (Integer.valueOf(map.get("ulbitrate"))  > totalCapacity * 8 * Integer.valueOf(map.get("ulallocrbrate"))) return true;
         return false;
     }
 
